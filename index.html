@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8"/>
@@ -19,10 +18,10 @@
   --muted:#2d5a72;
   --muted2:#5a9ab5;
 
-  --c1:#00c8ff; /* cyan */
-  --c2:#0ea5e9; /* sky blue */
-  --c3:#38bdf8; /* light blue */
-  --c4:#00f0d4; /* teal */
+  --c1:#00c8ff;
+  --c2:#0ea5e9;
+  --c3:#38bdf8;
+  --c4:#00f0d4;
 
   --s-online:#00f0a0;
   --s-idle:#f5a623;
@@ -43,7 +42,6 @@ html,body{
   overflow-x:hidden;
 }
 
-/* ── BG ── */
 .bg-canvas{
   position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
 }
@@ -64,7 +62,6 @@ html,body{
   0%{transform:translate(0,0) scale(1);}
   100%{transform:translate(30px,20px) scale(1.08);}
 }
-/* dot grid */
 .bg-dots{
   position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:radial-gradient(rgba(255,255,255,0.025) 1px,transparent 1px);
@@ -72,7 +69,6 @@ html,body{
   mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);
 }
 
-/* ── LAYOUT ── */
 .wrap{
   position:relative;z-index:1;
   max-width:480px;margin:0 auto;
@@ -80,7 +76,6 @@ html,body{
   display:flex;flex-direction:column;align-items:center;gap:14px;
 }
 
-/* ── AVATAR ── */
 .avatar-zone{
   display:flex;flex-direction:column;align-items:center;gap:12px;
   animation:riseUp .7s cubic-bezier(.22,1,.36,1) both;
@@ -120,10 +115,7 @@ html,body{
 .av-status.idle  {background:var(--s-idle);}
 .av-status.dnd   {background:var(--s-dnd);}
 
-/* name block */
-.av-name{
-  text-align:center;
-}
+.av-name{text-align:center;}
 .av-name h1{
   font-family:'Plus Jakarta Sans',sans-serif;
   font-size:1.9rem;font-weight:800;letter-spacing:-.04em;
@@ -132,7 +124,6 @@ html,body{
 }
 .av-name p{font-size:.82rem;color:var(--muted2);letter-spacing:.06em;margin-top:2px;}
 
-/* status pill */
 .status-pill{
   display:inline-flex;align-items:center;gap:7px;
   background:var(--card);border:1px solid var(--border);
@@ -148,14 +139,12 @@ html,body{
 .status-pill.idle   .sp-dot{animation:blink 1.6s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
 
-/* custom status */
 .custom-st{
   display:none;align-items:center;gap:5px;justify-content:center;
   font-size:.75rem;color:var(--muted2);margin-top:2px;
 }
 .custom-st.show{display:flex;}
 
-/* ── TAGS ── */
 .tags{
   display:flex;flex-wrap:wrap;gap:7px;justify-content:center;
   animation:riseUp .7s .1s cubic-bezier(.22,1,.36,1) both;
@@ -168,7 +157,6 @@ html,body{
 }
 .tag:hover{border-color:var(--border-h);color:var(--text);}
 
-/* ── SECTION WRAPPER (glass card) ── */
 .glass{
   width:100%;
   background:var(--card);
@@ -183,7 +171,6 @@ html,body{
   background:linear-gradient(135deg,rgba(255,255,255,.03) 0%,transparent 60%);
 }
 
-/* ── SOCIAL LINKS ── */
 .links-grid{
   display:grid;grid-template-columns:1fr 1fr;gap:10px;
   width:100%;
@@ -224,7 +211,6 @@ html,body{
 .lnk-fb{--lc:#1877f2;} .lnk-fb .lnk-ico{background:rgba(24,119,242,.12);}
 .lnk-yt{--lc:#ff0000;} .lnk-yt .lnk-ico{background:rgba(255,0,0,.12);}
 
-/* ── SPOTIFY ── */
 .sp-card{
   width:100%;
   animation:riseUp .7s .2s cubic-bezier(.22,1,.36,1) both;
@@ -274,14 +260,53 @@ html,body{
 .sp-eq span:nth-child(4){animation-delay:.2s;height:70%;}
 @keyframes eqA{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
 
-/* ── MUSIC PLAYER ── */
+/* ── FLOATING MUSIC WIDGET ── */
+.music-widget{
+  position:fixed;
+  bottom:80px; 
+  right:20px;
+  z-index:9999;
+  display:flex;flex-direction:column;align-items:flex-end;
+  gap:8px;
+}
+
+/* Toggle button */
+.mw-toggle{
+  width:46px;height:46px;border-radius:50%;
+  background:linear-gradient(135deg,#00c8ff,#0ea5e9);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,200,255,.45);
+  transition:transform .2s,box-shadow .2s;
+  flex-shrink:0;
+}
+.mw-toggle:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(0,200,255,.6);}
+.mw-toggle svg{width:22px;height:22px;fill:#fff;display:block;}
+
+/* Panel */
+.mw-panel{
+  width:300px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 8px 40px rgba(0,0,0,.6);
+  transform-origin:bottom right;
+  transition:transform .25s cubic-bezier(.22,1,.36,1),opacity .25s;
+}
+.mw-panel.hidden{
+  transform:scale(.85) translateY(12px);
+  opacity:0;
+  pointer-events:none;
+}
+
 .player-card{
   width:100%;
-  animation:riseUp .7s .25s cubic-bezier(.22,1,.36,1) both;
 }
 .player-inner{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r);padding:18px 20px;
+  background:transparent;border:none;
+  padding:14px 16px;
   position:relative;overflow:hidden;
 }
 .player-inner::before{
@@ -289,7 +314,6 @@ html,body{
   background:linear-gradient(90deg,#00c8ff,#0ea5e9,#00f0d4);
 }
 
-/* top row */
 .pl-top{display:flex;align-items:center;gap:13px;margin-bottom:15px;}
 .disc{
   width:50px;height:50px;border-radius:10px;flex-shrink:0;
@@ -319,7 +343,6 @@ html,body{
 .pl-eq-bar:nth-child(5){animation-delay:.15s;height:50%;}
 .pl-eq-bar.paused{animation-play-state:paused;}
 
-/* seek */
 .seek-row{display:flex;align-items:center;gap:9px;margin-bottom:13px;}
 .t{font-size:.68rem;color:var(--muted);width:30px;flex-shrink:0;}
 .t.e{text-align:right;}
@@ -338,7 +361,6 @@ input[type=range].vol::-webkit-slider-thumb{background:var(--c2);box-shadow:0 0 
 input[type=range].seek::-webkit-slider-thumb:hover,
 input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
 
-/* controls */
 .ctrls{display:flex;align-items:center;justify-content:center;gap:16px;}
 .cb{
   background:none;border:none;color:var(--muted2);cursor:pointer;
@@ -358,7 +380,6 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
 .cb.play:hover{transform:scale(1.07);box-shadow:0 0 28px rgba(0,200,255,.6);}
 .cb.play svg{width:21px;height:21px;}
 
-/* volume */
 .vol-row{
   display:flex;align-items:center;gap:9px;
   margin-top:13px;padding-top:13px;
@@ -373,12 +394,10 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
 .vol-ic svg{width:17px;height:17px;display:block;}
 .vol-pct{font-size:.68rem;color:var(--muted);width:30px;text-align:right;flex-shrink:0;}
 
-/* ── PLAYLIST MANAGER ── */
 .pl-panel{
   width:100%;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r);overflow:hidden;
-  animation:riseUp .7s .3s cubic-bezier(.22,1,.36,1) both;
+  background:transparent;border:none;border-top:1px solid var(--border);
+  border-radius:0;overflow:hidden;
 }
 .pl-head{
   display:flex;align-items:center;justify-content:space-between;
@@ -452,20 +471,17 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
 .tr-del:hover{color:var(--c3);background:rgba(240,107,186,.1);}
 .tr-del svg{width:14px;height:14px;display:block;}
 
-/* ── FOOTER ── */
 .foot{
   font-size:.72rem;color:var(--muted);
   animation:riseUp .7s .35s cubic-bezier(.22,1,.36,1) both;
 }
 
-/* ── SHARED ANIMATIONS ── */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes riseUp{
   from{opacity:0;transform:translateY(22px);}
   to{opacity:1;transform:translateY(0);}
 }
 
-/* loading spinner */
 .ld{
   display:inline-flex;align-items:center;gap:6px;
   font-size:.75rem;color:var(--muted2);
@@ -488,7 +504,7 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
 
 <div class="wrap">
 
-  <!-- ── AVATAR ── -->
+  <!-- AVATAR -->
   <div class="avatar-zone">
     <div class="av-ring-wrap">
       <div class="av-ring"></div>
@@ -504,7 +520,7 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
 
     <div class="av-name">
       <h1>Nam PC</h1>
-      <p>@nampc 
+      <p>@nampc</p>
     </div>
 
     <div class="status-pill offline" id="statusPill">
@@ -517,7 +533,7 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
     </div>
   </div>
 
-  <!-- ── TAGS ── -->
+  <!-- TAGS -->
   <div class="tags">
     <span class="tag">🎮 Gamer</span>
     <span class="tag">⚡ Optimize</span>
@@ -525,7 +541,7 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
     <span class="tag">🛠️ Developer</span>
   </div>
 
-  <!-- ── SOCIAL LINKS ── -->
+  <!-- SOCIAL LINKS -->
   <div class="links-grid">
     <a href="https://www.roblox.com/home" target="_blank" class="lnk lnk-roblox">
       <div class="lnk-ico">
@@ -565,7 +581,7 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
     </a>
   </div>
 
-  <!-- ── SPOTIFY ── -->
+  <!-- SPOTIFY -->
   <div class="sp-card" id="spCard">
     <div class="sp-inner">
       <div class="sp-art" id="spArt">
@@ -590,86 +606,95 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
     </div>
   </div>
 
-  <!-- ── MUSIC PLAYER ── -->
-  <div class="player-card">
-    <div class="player-inner">
-      <div class="pl-top">
-        <div class="disc">
-          <div class="disc-spin paused" id="discSpin"></div>
-          <div class="disc-center"></div>
-        </div>
-        <div class="t-info">
-          <div class="t-name" id="tName">Chọn bài hát...</div>
-          <div class="t-artist" id="tArtist">Nam PC · Playlist</div>
-        </div>
-        <div class="pl-eq" id="plEq">
-          <div class="pl-eq-bar paused"></div>
-          <div class="pl-eq-bar paused"></div>
-          <div class="pl-eq-bar paused"></div>
-          <div class="pl-eq-bar paused"></div>
-          <div class="pl-eq-bar paused"></div>
-        </div>
-      </div>
-
-      <div class="seek-row">
-        <span class="t" id="curT">0:00</span>
-        <input class="seek" type="range" id="seekBar" min="0" max="100" value="0"/>
-        <span class="t e" id="totT">0:00</span>
-      </div>
-
-      <div class="ctrls">
-        <button class="cb" id="btnPrev">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-        </button>
-        <button class="cb play" id="btnPlay">
-          <svg id="playIco" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        </button>
-        <button class="cb" id="btnNext">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
-        </button>
-        <button class="cb" id="btnUpload" title="Tải nhạc lên" style="margin-left:6px">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13v6H5v-6H3v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6zM13 3.83l3.59 3.58L18 6l-6-6-6 6 1.41 1.41L11 3.83V16h2z"/></svg>
-        </button>
-        <input type="file" id="fileIn" accept="audio/*" multiple style="display:none"/>
-      </div>
-
-      <div class="vol-row">
-        <button class="vol-ic" id="btnMute">
-          <svg id="volIco" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-          </svg>
-        </button>
-        <input class="vol" type="range" id="volBar" min="0" max="100" value="80"/>
-        <span class="vol-pct" id="volPct">80%</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── PLAYLIST MANAGER ── -->
-  <div class="pl-panel">
-    <div class="pl-head" id="plHead">
-      <div class="ph-left">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h13v-2H3v2zm0-5h10v-2H3v2zm0-7v2h13V6H3zm18 9.59L17.42 12 21 8.41 19.59 7l-5 5 5 5L21 15.59z"/></svg>
-        Danh sách nhạc
-        <span class="pl-cnt" id="plCnt">0 bài</span>
-      </div>
-      <div class="ph-chevron" id="plChev">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-      </div>
-    </div>
-    <div class="pl-body" id="plBody">
-      <div class="add-row">
-        <div class="add-inputs">
-          <input class="pl-in" id="plName" placeholder="Tên bài (tuỳ chọn)"/>
-          <input class="pl-in" id="plUrl" placeholder="Dán link MP3..."/>
-          <button class="add-btn" id="plAdd">+ Thêm</button>
-        </div>
-      </div>
-      <div class="track-list" id="tList"></div>
-    </div>
-  </div>
-
   <div class="foot">© 2025 Nam PC · Made with ❤</div>
+</div>
+
+<!-- FLOATING MUSIC WIDGET -->
+<div class="music-widget">
+  <div class="mw-panel hidden" id="mwPanel">
+    <!-- MUSIC PLAYER -->
+    <div class="player-card">
+      <div class="player-inner">
+        <div class="pl-top">
+          <div class="disc">
+            <div class="disc-spin paused" id="discSpin"></div>
+            <div class="disc-center"></div>
+          </div>
+          <div class="t-info">
+            <div class="t-name" id="tName">Chọn bài hát...</div>
+            <div class="t-artist" id="tArtist">Nam PC · Playlist</div>
+          </div>
+          <div class="pl-eq" id="plEq">
+            <div class="pl-eq-bar paused"></div>
+            <div class="pl-eq-bar paused"></div>
+            <div class="pl-eq-bar paused"></div>
+            <div class="pl-eq-bar paused"></div>
+            <div class="pl-eq-bar paused"></div>
+          </div>
+        </div>
+        <div class="seek-row">
+          <span class="t" id="curT">0:00</span>
+          <input class="seek" type="range" id="seekBar" min="0" max="100" value="0"/>
+          <span class="t e" id="totT">0:00</span>
+        </div>
+        <div class="ctrls">
+          <button class="cb" id="btnPrev">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+          </button>
+          <button class="cb play" id="btnPlay">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path id="playIco" d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+          <button class="cb" id="btnNext">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
+          </button>
+          <button class="cb" id="btnUpload" title="Tải nhạc lên" style="margin-left:6px">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13v6H5v-6H3v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6zM13 3.83l3.59 3.58L18 6l-6-6-6 6 1.41 1.41L11 3.83V16h2z"/></svg>
+          </button>
+          <input type="file" id="fileIn" accept="audio/*" multiple style="display:none"/>
+        </div>
+        <div class="vol-row">
+          <button class="vol-ic" id="btnMute">
+            <svg id="volIco" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+          </button>
+          <input class="vol" type="range" id="volBar" min="0" max="100" value="80"/>
+          <span class="vol-pct" id="volPct">80%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAYLIST MANAGER -->
+    <div class="pl-panel">
+      <div class="pl-head" id="plHead">
+        <div class="ph-left">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h13v-2H3v2zm0-5h10v-2H3v2zm0-7v2h13V6H3zm18 9.59L17.42 12 21 8.41 19.59 7l-5 5 5 5L21 15.59z"/></svg>
+          Danh sách nhạc
+          <span class="pl-cnt" id="plCnt">0 bài</span>
+        </div>
+        <div class="ph-chevron" id="plChev">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        </div>
+      </div>
+      <div class="pl-body" id="plBody">
+        <div class="add-row">
+          <div class="add-inputs">
+            <input class="pl-in" id="plName" placeholder="Tên bài (tuỳ chọn)"/>
+            <input class="pl-in" id="plUrl" placeholder="Dán link MP3..."/>
+            <button class="add-btn" id="plAdd">+ Thêm</button>
+          </div>
+        </div>
+        <div class="track-list" id="tList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toggle button -->
+  <button class="mw-toggle" id="mwToggle" title="Mở/đóng khay nhạc">
+    <svg viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6zm-2 16a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+  </button>
 </div>
 
 <audio id="aud"></audio>
@@ -783,155 +808,180 @@ connectWS();
 // ════════════════════════════════
 //  MUSIC PLAYER
 // ════════════════════════════════
-const aud    = document.getElementById('aud');
-const btnPlay= document.getElementById('btnPlay');
-const seekBar= document.getElementById('seekBar');
-const curT   = document.getElementById('curT');
-const totT   = document.getElementById('totT');
-const tName  = document.getElementById('tName');
-const tArtist= document.getElementById('tArtist');
+const aud     = document.getElementById('aud');
+const btnPlay = document.getElementById('btnPlay');
+const seekBar = document.getElementById('seekBar');
+const curT    = document.getElementById('curT');
+const totT    = document.getElementById('totT');
+const tName   = document.getElementById('tName');
+const tArtist = document.getElementById('tArtist');
 const discSpin= document.getElementById('discSpin');
-const eqBars = document.querySelectorAll('.pl-eq-bar');
-const fileIn = document.getElementById('fileIn');
-const plEq   = document.getElementById('plEq');
+const eqBars  = document.querySelectorAll('.pl-eq-bar');
+const fileIn  = document.getElementById('fileIn');
 
-let playlist=[
-  {name:'Trăng Hoa Mây Mưa',url:'https://cdn.discordapp.com/attachments/1468209685684555981/1484754211114582216/Trang_Hoa_May_Mua_-_Binh_Gold.mp3?ex=69bf609d&is=69be0f1d&hm=68a1195ecf320e7e3e82f67700aed0fed7eacf80e40033d54c1055ea45a798a3&'},
+// ✅ FIX: trỏ đúng vào <path id="playIco">, không phải <svg>
+const playIcoPath = document.getElementById('playIco');
+
+const PLAY_PATH  = 'M8 5v14l11-7z';
+const PAUSE_PATH = 'M6 19h4V5H6v14zm8-14v14h4V5h-4z';
+
+let playlist = [
+  {name:'Trăng Hoa Mây Mưa', url:'https://cdn.discordapp.com/attachments/1468209685684555981/1484754211114582216/Trang_Hoa_May_Mua_-_Binh_Gold.mp3?ex=69bf609d&is=69be0f1d&hm=68a1195ecf320e7e3e82f67700aed0fed7eacf80e40033d54c1055ea45a798a3&'},
 ];
-let cidx=0, playing=false;
+let cidx = 0, playing = false;
 
-const PLAY_PATH='M8 5v14l11-7z';
-const PAUSE_PATH='M6 19h4V5H6v14zm8-14v14h4V5h-4z';
-
-function fmt(s){const m=Math.floor(s/60),sc=Math.floor(s%60);return m+':'+String(sc).padStart(2,'0');}
+function fmt(s){
+  const m=Math.floor(s/60), sc=Math.floor(s%60);
+  return m+':'+String(sc).padStart(2,'0');
+}
 
 function setPlay(v){
-  playing=v;
-  document.getElementById('playIco').setAttribute('d',v?PAUSE_PATH:PLAY_PATH);
-  discSpin.classList.toggle('paused',!v);
-  eqBars.forEach(b=>b.classList.toggle('paused',!v));
+  playing = v;
+  // ✅ setAttribute('d', ...) gọi đúng trên <path>
+  playIcoPath.setAttribute('d', v ? PAUSE_PATH : PLAY_PATH);
+  discSpin.classList.toggle('paused', !v);
+  eqBars.forEach(b => b.classList.toggle('paused', !v));
 }
 
 function loadTrack(i){
-  if(!playlist.length)return;
-  cidx=(i+playlist.length)%playlist.length;
-  const t=playlist[cidx];
-  aud.src=t.url;
-  tName.textContent=t.name;
-  tArtist.textContent='Nam PC · Playlist ('+(cidx+1)+'/'+playlist.length+')';
+  if(!playlist.length) return;
+  cidx = (i + playlist.length) % playlist.length;
+  const t = playlist[cidx];
+  aud.src = t.url;
+  tName.textContent = t.name;
+  tArtist.textContent = 'Nam PC · Playlist ('+(cidx+1)+'/'+playlist.length+')';
   aud.play().then(()=>setPlay(true)).catch(()=>{});
 }
 
-btnPlay.addEventListener('click',()=>{
-  if(!playlist.length){fileIn.click();return;}
-  if(playing){aud.pause();setPlay(false);}
-  else{aud.play();setPlay(true);}
+btnPlay.addEventListener('click', ()=>{
+  if(!playlist.length){ fileIn.click(); return; }
+  if(playing){ aud.pause(); setPlay(false); }
+  else { aud.play(); setPlay(true); }
 });
-document.getElementById('btnPrev').addEventListener('click',()=>loadTrack(cidx-1));
-document.getElementById('btnNext').addEventListener('click',()=>loadTrack(cidx+1));
-document.getElementById('btnUpload').addEventListener('click',()=>fileIn.click());
+document.getElementById('btnPrev').addEventListener('click', ()=>loadTrack(cidx-1));
+document.getElementById('btnNext').addEventListener('click', ()=>loadTrack(cidx+1));
+document.getElementById('btnUpload').addEventListener('click', ()=>fileIn.click());
 
-fileIn.addEventListener('change',e=>{
-  const files=Array.from(e.target.files);
-  if(!files.length)return;
+fileIn.addEventListener('change', e=>{
+  const files = Array.from(e.target.files);
+  if(!files.length) return;
   playlist.forEach(t=>URL.revokeObjectURL(t.url));
-  playlist=files.map(f=>({name:f.name.replace(/\.[^.]+$/,''),url:URL.createObjectURL(f)}));
+  playlist = files.map(f=>({name:f.name.replace(/\.[^.]+$/,''), url:URL.createObjectURL(f)}));
   loadTrack(0);
 });
 
-aud.addEventListener('timeupdate',()=>{
-  if(!aud.duration)return;
-  const p=(aud.currentTime/aud.duration)*100;
-  seekBar.value=p;
-  seekBar.style.background=`linear-gradient(90deg,var(--c1) ${p}%,rgba(255,255,255,.08) ${p}%)`;
-  curT.textContent=fmt(aud.currentTime);
+aud.addEventListener('timeupdate', ()=>{
+  if(!aud.duration) return;
+  const p = (aud.currentTime/aud.duration)*100;
+  seekBar.value = p;
+  seekBar.style.background = `linear-gradient(90deg,var(--c1) ${p}%,rgba(255,255,255,.08) ${p}%)`;
+  curT.textContent = fmt(aud.currentTime);
 });
-aud.addEventListener('loadedmetadata',()=>{totT.textContent=fmt(aud.duration);});
-seekBar.addEventListener('input',()=>{if(aud.duration)aud.currentTime=(seekBar.value/100)*aud.duration;});
-aud.addEventListener('ended',()=>{playlist.length>1?loadTrack(cidx+1):setPlay(false);});
+aud.addEventListener('loadedmetadata', ()=>{ totT.textContent = fmt(aud.duration); });
+seekBar.addEventListener('input', ()=>{ if(aud.duration) aud.currentTime=(seekBar.value/100)*aud.duration; });
+aud.addEventListener('ended', ()=>{ playlist.length>1 ? loadTrack(cidx+1) : setPlay(false); });
 
-// volume
-const volBar=document.getElementById('volBar');
-const volPct=document.getElementById('volPct');
-const btnMute=document.getElementById('btnMute');
-const volIco=document.getElementById('volIco');
-const iHigh=`<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>`;
-const iLow=`<path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>`;
-const iMute=`<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>`;
-let lastVol=0.8; aud.volume=0.8;
+// Volume
+const volBar  = document.getElementById('volBar');
+const volPct  = document.getElementById('volPct');
+const btnMute = document.getElementById('btnMute');
+const volIco  = document.getElementById('volIco');
+const iHigh = `<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>`;
+const iLow  = `<path d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>`;
+const iMute = `<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>`;
+let lastVol = 0.8;
+aud.volume = 0.8;
+
 function updateVol(v){
-  const p=Math.round(v*100);
-  volBar.value=p; volPct.textContent=p+'%';
-  volBar.style.background=`linear-gradient(90deg,var(--c2) ${p}%,rgba(255,255,255,.08) ${p}%)`;
-  volIco.innerHTML=v===0?iMute:v<.5?iLow:iHigh;
+  const p = Math.round(v*100);
+  volBar.value = p;
+  volPct.textContent = p+'%';
+  volBar.style.background = `linear-gradient(90deg,var(--c2) ${p}%,rgba(255,255,255,.08) ${p}%)`;
+  volIco.innerHTML = v===0 ? iMute : v<.5 ? iLow : iHigh;
 }
-volBar.addEventListener('input',()=>{const v=volBar.value/100;aud.volume=v;if(v>0)lastVol=v;updateVol(v);});
-btnMute.addEventListener('click',()=>{
-  if(aud.volume>0){lastVol=aud.volume;aud.volume=0;updateVol(0);}
-  else{aud.volume=lastVol||.8;updateVol(aud.volume);}
+volBar.addEventListener('input', ()=>{
+  const v = volBar.value/100;
+  aud.volume = v;
+  if(v>0) lastVol = v;
+  updateVol(v);
+});
+btnMute.addEventListener('click', ()=>{
+  if(aud.volume>0){ lastVol=aud.volume; aud.volume=0; updateVol(0); }
+  else { aud.volume=lastVol||.8; updateVol(aud.volume); }
 });
 updateVol(.8);
 
-// ── Playlist Manager ──
-const plHead=document.getElementById('plHead');
-const plBody=document.getElementById('plBody');
-const plChev=document.getElementById('plChev');
-const plNameI=document.getElementById('plName');
-const plUrlI=document.getElementById('plUrl');
-const plAdd=document.getElementById('plAdd');
-const tList=document.getElementById('tList');
-const plCnt=document.getElementById('plCnt');
+// Playlist Manager
+const plHead  = document.getElementById('plHead');
+const plBody  = document.getElementById('plBody');
+const plChev  = document.getElementById('plChev');
+const plNameI = document.getElementById('plName');
+const plUrlI  = document.getElementById('plUrl');
+const plAdd   = document.getElementById('plAdd');
+const tList   = document.getElementById('tList');
+const plCnt   = document.getElementById('plCnt');
 
-plHead.addEventListener('click',()=>{
+plHead.addEventListener('click', ()=>{
   plBody.classList.toggle('open');
   plChev.classList.toggle('open');
   plHead.classList.toggle('open');
 });
 
-function updCnt(){plCnt.textContent=playlist.length+' bài';}
+function updCnt(){ plCnt.textContent = playlist.length+' bài'; }
 
 function renderList(){
-  tList.innerHTML='';
+  tList.innerHTML = '';
   playlist.forEach((t,i)=>{
-    const el=document.createElement('div');
-    el.className='tr-item'+(i===cidx&&playing?' active':'');
-    el.innerHTML=`<span class="tr-num">${i+1}</span><span class="tr-n">${t.name}</span>
+    const el = document.createElement('div');
+    el.className = 'tr-item'+(i===cidx && playing ? ' active' : '');
+    el.innerHTML = `<span class="tr-num">${i+1}</span><span class="tr-n">${t.name}</span>
       <button class="tr-del" data-i="${i}"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>`;
-    el.addEventListener('click',e=>{
-      if(e.target.closest('.tr-del'))return;
-      loadTrack(i);renderList();
+    el.addEventListener('click', e=>{
+      if(e.target.closest('.tr-del')) return;
+      loadTrack(i); renderList();
     });
-    el.querySelector('.tr-del').addEventListener('click',()=>{
+    el.querySelector('.tr-del').addEventListener('click', ()=>{
       playlist.splice(i,1);
-      if(cidx>=playlist.length)cidx=playlist.length-1;
-      if(!playlist.length){aud.pause();setPlay(false);aud.src='';tName.textContent='Chọn bài hát...';tArtist.textContent='Nam PC · Playlist';}
-      updCnt();renderList();
+      if(cidx >= playlist.length) cidx = playlist.length-1;
+      if(!playlist.length){
+        aud.pause(); setPlay(false); aud.src='';
+        tName.textContent='Chọn bài hát...';
+        tArtist.textContent='Nam PC · Playlist';
+      }
+      updCnt(); renderList();
     });
     tList.appendChild(el);
   });
   updCnt();
 }
 
-plAdd.addEventListener('click',()=>{
-  const url=plUrlI.value.trim();
-  if(!url){plUrlI.focus();return;}
-  const n=plNameI.value.trim()||url.split('/').pop().replace(/\.[^.]+$/,'')||'Bài '+(playlist.length+1);
-  playlist.push({name:n,url});
-  plNameI.value='';plUrlI.value='';
+plAdd.addEventListener('click', ()=>{
+  const url = plUrlI.value.trim();
+  if(!url){ plUrlI.focus(); return; }
+  const n = plNameI.value.trim() || url.split('/').pop().replace(/\.[^.]+$/,'') || 'Bài '+(playlist.length+1);
+  playlist.push({name:n, url});
+  plNameI.value=''; plUrlI.value='';
   renderList();
-  if(playlist.length===1)loadTrack(0);
+  if(playlist.length===1) loadTrack(0);
 });
-plUrlI.addEventListener('keydown',e=>{if(e.key==='Enter')plAdd.click();});
-plNameI.addEventListener('keydown',e=>{if(e.key==='Enter')plUrlI.focus();});
-aud.addEventListener('play',()=>renderList());
-aud.addEventListener('pause',()=>renderList());
+plUrlI.addEventListener('keydown', e=>{ if(e.key==='Enter') plAdd.click(); });
+plNameI.addEventListener('keydown', e=>{ if(e.key==='Enter') plUrlI.focus(); });
+aud.addEventListener('play',  ()=>renderList());
+aud.addEventListener('pause', ()=>renderList());
 
 if(playlist.length){
-  aud.src=playlist[0].url;
-  tName.textContent=playlist[0].name;
-  tArtist.textContent='Nam PC · Playlist (1/'+playlist.length+')';
+  aud.src = playlist[0].url;
+  tName.textContent = playlist[0].name;
+  tArtist.textContent = 'Nam PC · Playlist (1/'+playlist.length+')';
   renderList();
 }
+
+// ── WIDGET TOGGLE ──
+const mwPanel  = document.getElementById('mwPanel');
+const mwToggle = document.getElementById('mwToggle');
+mwToggle.addEventListener('click', ()=>{
+  mwPanel.classList.toggle('hidden');
+});
 </script>
 </body>
 </html>
